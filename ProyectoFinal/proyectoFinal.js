@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Función para manejar el formulario de checkout
-document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
     const nombreComprador = document.getElementById('nombre-comprador').value;
