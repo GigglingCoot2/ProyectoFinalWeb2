@@ -106,7 +106,28 @@ form button:hover {
 #productos-lista button:hover, #carrito button:hover, #mis-productos button:hover {
     background-color: #218838;
 }
-
+/*Boton de registro*/
+#btn-registro {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+/* Boton volverl login*/
+#volver-login {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+} 
 /* Botón para finalizar compra */
 #finalizar-compra {
     background-color: #ff5722;
