@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 2, nombre: "vendedor1", password: "1234", rol: "vendedor" }
         ],
         productos: [
-            { nombre: "Producto 1", precio: 100, descripcion: "Descripción producto 1", stock: 10 },
-            { nombre: "Producto 2", precio: 150, descripcion: "Descripción producto 2", stock: 5 },
-            { nombre: "Producto 3", precio: 200, descripcion: "Descripción producto 3", stock: 2 }
+            { nombre: "Calcetines", precio: 100, descripcion: "Descripción producto 1", stock: 10 },
+            { nombre: "Gorras", precio: 150, descripcion: "Descripción producto 2", stock: 5 },
+            { nombre: "Sudadera", precio: 200, descripcion: "Descripción producto 3", stock: 2 }
         ]
     };
 
