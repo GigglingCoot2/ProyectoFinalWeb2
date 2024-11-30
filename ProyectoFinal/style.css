@@ -1,0 +1,210 @@
+/* Estilo base */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Encabezado */
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav button {
+    background-color: #0056b3;
+    border: none;
+    color: white;
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav button:hover {
+    background-color: #003d80;
+}
+
+/* Secciones */
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+section {
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Formularios */
+form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+form input, form textarea, form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+form button {
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Listas y botones */
+#productos-lista div, #carrito div, #mis-productos div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f1f1f1;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+#productos-lista button, #carrito button, #mis-productos button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#productos-lista button:hover, #carrito button:hover, #mis-productos button:hover {
+    background-color: #218838;
+}
+
+/* Botón para finalizar compra */
+#finalizar-compra {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    margin: 20px auto;
+    transition: background-color 0.3s;
+}
+
+#finalizar-compra:hover {
+    background-color: #e64a19;
+}
+
+/* Estilo para la sección de Checkout */
+#checkout {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#checkout form {
+    display: flex;
+    flex-direction: column;
+}
+
+#checkout form label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#checkout form input, #checkout form select, #checkout form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#checkout form button {
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+#checkout form button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para la sección de Confirmación de Compra */
+#confirmacion-compra {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #d4edda;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#confirmacion-compra h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #155724;
+}
+
+#confirmacion-compra p {
+    font-size: 18px;
+    color: #155724;
+    margin-top: 10px;
+}
+
+#confirmacion-compra #check-icon {
+    margin-top: 20px;
+    width: 50px;
+    height: 50px;
+}
+
+#confirmacion-compra button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#confirmacion-compra button:hover {
+    background-color: #0056b3;
+}
