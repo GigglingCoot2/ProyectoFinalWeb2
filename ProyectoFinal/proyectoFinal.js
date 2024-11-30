@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function agregarAlCarrito(producto) {
-        if (producto.stock > 0) {
+        if (producto.stock > -1) {
             carrito.push(producto);
             producto.stock -= 1; // Reducir el stock
             localStorage.setItem('carrito', JSON.stringify(carrito));
