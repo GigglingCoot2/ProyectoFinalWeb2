@@ -16,7 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let usuarioActivo = null;
 
     function mostrarSeccion(rol) {
+        // Si el usuario no está logueado, pedir login
+        if (!usuarioActivo) {
+            document.getElementById('login').classList.remove('hidden');
+            document.getElementById('comprador').classList.add('hidden');
+            document.getElementById('vendedor').classList.add('hidden');
+            return;
+        }
+
         document.getElementById('login').classList.add('hidden');
+        
+        // Se verifican los roles y se muestran las secciones correspondientes
         if (rol === "comprador") {
             document.getElementById('vendedor').classList.add('hidden');
             document.getElementById('comprador').classList.remove('hidden');
@@ -42,19 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-   // Función para agregar al carrito
+    // Función para agregar al carrito
     function agregarAlCarrito(producto) {
-    if (producto.stock > 0) {
-        carrito.push(producto);
-        producto.stock -= 1; // Reducir el stock en la base de datos
-        localStorage.setItem('carrito', JSON.stringify(carrito));
-        cargarProductos(); // Actualizar los productos disponibles
-        mostrarCarrito();
-    } else {
-        alert("No hay suficiente stock para agregar este producto al carrito.");
+        if (producto.stock > 0) {
+            carrito.push(producto);
+            producto.stock -= 1; // Reducir el stock en la base de datos
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            cargarProductos(); // Actualizar los productos disponibles
+            mostrarCarrito();
+        } else {
+            alert("No hay suficiente stock para agregar este producto al carrito.");
+        }
     }
-}
 
+    // Función para mostrar el carrito
     function mostrarCarrito() {
         const carritoDiv = document.getElementById('carrito');
         carritoDiv.innerHTML = '';
@@ -74,9 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
             carritoDiv.appendChild(item);
         });
     }
-    
 
-        function cargarProductos() {
+    // Función para cargar los productos disponibles para el comprador
+    function cargarProductos() {
         const lista = document.getElementById('productos-lista');
         lista.innerHTML = '';
         db.productos.forEach(producto => {
@@ -91,11 +102,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Función para agregar un nuevo producto
     function agregarProducto(producto) {
         db.productos.push(producto);
         cargarMisProductos();
     }
 
+    // Función para cargar los productos del vendedor
     function cargarMisProductos() {
         const lista = document.getElementById('mis-productos');
         lista.innerHTML = '';
@@ -113,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Event listeners para manejar la adición de productos
     document.getElementById('producto-form').addEventListener('submit', (e) => {
         e.preventDefault();
         const nombre = document.getElementById('nombre').value;
@@ -128,60 +142,67 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('btn-comprador').addEventListener('click', () => mostrarSeccion("comprador"));
-    document.getElementById('btn-vendedor').addEventListener('click', () => mostrarSeccion("vendedor"));
+    // Eventos para cambiar entre comprador y vendedor
+    document.getElementById('btn-comprador').addEventListener('click', () => {
+        usuarioActivo = null; // Resetear el usuario activo al cambiar de rol
+        mostrarSeccion(null); // Forzar a que se pida login
+    });
 
-  // Función para finalizar la compra
+    document.getElementById('btn-vendedor').addEventListener('click', () => {
+        usuarioActivo = null; // Resetear el usuario activo al cambiar de rol
+        mostrarSeccion(null); // Forzar a que se pida login
+    });
+
+    // Evento para finalizar la compra
     function finalizarCompra() {
-    if (carrito.length === 0) {
-        alert("El carrito está vacío. Agrega productos antes de finalizar la compra.");
-        return;
+        if (carrito.length === 0) {
+            alert("El carrito está vacío. Agrega productos antes de finalizar la compra.");
+            return;
+        }
+
+        // Mostrar formulario de checkout
+        document.getElementById('checkout').classList.remove('hidden');
+        document.getElementById('finalizar-compra').classList.add('hidden');
     }
 
-   // Mostrar formulario de checkout
-   document.getElementById('checkout').classList.remove('hidden');
-   document.getElementById('finalizar-compra').classList.add('hidden');
-}
-
-
-    // Función para manejar el formulario de checkout
+    // Evento para el formulario de checkout
     document.getElementById('checkout-form').addEventListener('submit', function(e) {
-    e.preventDefault();
+        e.preventDefault();
 
-    const nombreComprador = document.getElementById('nombre-comprador').value;
-    const direccion = document.getElementById('direccion').value;
-    const metodoPago = document.getElementById('metodo-pago').value;
+        const nombreComprador = document.getElementById('nombre-comprador').value;
+        const direccion = document.getElementById('direccion').value;
+        const metodoPago = document.getElementById('metodo-pago').value;
 
-    if (nombreComprador && direccion && metodoPago) {
-        // Calcular total con reduce
-        let total = carrito.reduce((sum, producto) => sum + producto.precio, 0);
+        if (nombreComprador && direccion && metodoPago) {
+            // Calcular total con reduce
+            let total = carrito.reduce((sum, producto) => sum + producto.precio, 0);
 
-        // Mostrar detalles de compra en alerta
-        alert(`¡Compra realizada con éxito!\nTotal a pagar: $${total}\nMétodo de Pago: ${metodoPago}\nDirección de Envío: ${direccion}\nComprador: ${nombreComprador}`);
+            // Mostrar detalles de compra en alerta
+            alert(`¡Compra realizada con éxito!\nTotal a pagar: $${total}\nMétodo de Pago: ${metodoPago}\nDirección de Envío: ${direccion}\nComprador: ${nombreComprador}`);
 
-        // Vaciar el carrito (sin restaurar el stock)
-        carrito = [];
-        localStorage.setItem('carrito', JSON.stringify(carrito));
-        mostrarCarrito(); // Actualizar la vista del carrito
+            // Vaciar el carrito (sin restaurar el stock)
+            carrito = [];
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            mostrarCarrito(); // Actualizar la vista del carrito
 
-        // Ocultar formulario de checkout y mostrar confirmación
-        document.getElementById('checkout').classList.add('hidden');
-        document.getElementById('confirmacion-compra').classList.remove('hidden');
-    } else {
-        alert("Por favor, completa todos los campos.");
-    }
-});
+            // Ocultar formulario de checkout y mostrar confirmación
+            document.getElementById('checkout').classList.add('hidden');
+            document.getElementById('confirmacion-compra').classList.remove('hidden');
+        } else {
+            alert("Por favor, completa todos los campos.");
+        }
+    });
+
     // Evento para el botón "Finalizar Compra"
     document.getElementById('finalizar-compra').addEventListener('click', finalizarCompra);
 
-   // Evento para el botón "Volver a Comprar"
+    // Evento para el botón "Volver a Comprar"
     document.getElementById('volver-a-comprar').addEventListener('click', function() {
-    // Ocultar confirmación y mostrar productos disponibles
-    document.getElementById('confirmacion-compra').classList.add('hidden');
-    mostrarSeccion("comprador"); // Regresar a la sección de comprador
-    carrito = []; // Vaciar el carrito
-    localStorage.setItem('carrito', JSON.stringify(carrito)); // Actualizar el carrito en LocalStorage
-    mostrarCarrito(); // Actualizar la vista del carrito
+        // Ocultar confirmación y mostrar productos disponibles
+        document.getElementById('confirmacion-compra').classList.add('hidden');
+        mostrarSeccion("comprador"); // Regresar a la sección de comprador
+        carrito = []; // Vaciar el carrito
+        localStorage.setItem('carrito', JSON.stringify(carrito)); // Actualizar el carrito en LocalStorage
+        mostrarCarrito(); // Actualizar la vista del carrito
     });
-    
 });
