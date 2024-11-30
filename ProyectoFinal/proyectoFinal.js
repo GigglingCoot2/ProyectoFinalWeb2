@@ -5,7 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 1, nombre: "comprador1", password: "1234", rol: "comprador" },
             { id: 2, nombre: "vendedor1", password: "1234", rol: "vendedor" }
         ],
-        productos: [],
+        productos: [
+            { nombre: "Producto 1", precio: 100, descripcion: "Descripción producto 1", stock: 10 },
+            { nombre: "Producto 2", precio: 150, descripcion: "Descripción producto 2", stock: 5 },
+            { nombre: "Producto 3", precio: 200, descripcion: "Descripción producto 3", stock: 2 }
+        ]
     };
 
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
@@ -39,9 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function agregarAlCarrito(producto) {
-        carrito.push(producto);
-        localStorage.setItem('carrito', JSON.stringify(carrito));
-        mostrarCarrito();
+        if (producto.stock > 0) {
+            carrito.push(producto);
+            producto.stock -= 1; // Reducir el stock
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            cargarProductos(); // Actualizar los productos disponibles
+            mostrarCarrito();
+        } else {
+            alert("No hay suficiente stock para agregar este producto al carrito.");
+        }
     }
 
     function mostrarCarrito() {
@@ -54,7 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             eliminarBtn.textContent = 'Eliminar';
             eliminarBtn.addEventListener('click', () => {
                 carrito.splice(index, 1);
+                producto.stock += 1; // Restaurar el stock cuando se elimina del carrito
                 localStorage.setItem('carrito', JSON.stringify(carrito));
+                cargarProductos(); // Actualizar los productos disponibles
                 mostrarCarrito();
             });
             item.appendChild(eliminarBtn);
@@ -67,9 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
         lista.innerHTML = '';
         db.productos.forEach(producto => {
             const item = document.createElement('div');
-            item.textContent = `${producto.nombre} - $${producto.precio}---${producto.descripcion}`;
+            item.textContent = `${producto.nombre} - $${producto.precio} - Stock: ${producto.stock}`;
             const btnAgregar = document.createElement('button');
-            btnAgregar.textContent = 'Agregar al Carrito';
+            btnAgregar.textContent = producto.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock';
+            btnAgregar.disabled = producto.stock <= 0; // Deshabilitar si no hay stock disponible
             btnAgregar.addEventListener('click', () => agregarAlCarrito(producto));
             item.appendChild(btnAgregar);
             lista.appendChild(item);
@@ -86,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lista.innerHTML = '';
         db.productos.forEach((producto, index) => {
             const item = document.createElement('div');
-            item.textContent = `${producto.nombre} - $${producto.precio}`;
+            item.textContent = `${producto.nombre} - $${producto.precio} - Stock: ${producto.stock}`;
             const btnEliminar = document.createElement('button');
             btnEliminar.textContent = 'Eliminar';
             btnEliminar.addEventListener('click', () => {
@@ -105,117 +118,67 @@ document.addEventListener('DOMContentLoaded', () => {
         const descripcion = document.getElementById('descripcion').value;
         const stock = parseInt(document.getElementById('stock').value, 10);
 
-        if (nombre && precio && descripcion && stock) {
+        if (nombre && precio && descripcion && stock >= 0) {
             agregarProducto({ nombre, precio, descripcion, stock });
             document.getElementById('producto-form').reset();
         } else {
-            alert("Por favor, complete todos los campos");
+            alert("Por favor, complete todos los campos correctamente");
         }
     });
 
     document.getElementById('btn-comprador').addEventListener('click', () => mostrarSeccion("comprador"));
     document.getElementById('btn-vendedor').addEventListener('click', () => mostrarSeccion("vendedor"));
-});
 
-// Función para finalizar la compra
-function finalizarCompra() {
-    if (carrito.length === 0) {
-        alert("El carrito está vacío. Agrega productos antes de finalizar la compra.");
-        return;
+    // Función para finalizar la compra
+    function finalizarCompra() {
+        if (carrito.length === 0) {
+            alert("El carrito está vacío. Agrega productos antes de finalizar la compra.");
+            return;
+        }
+
+        // Mostrar formulario de checkout
+        document.getElementById('checkout').classList.remove('hidden');
+        document.getElementById('finalizar-compra').classList.add('hidden');
     }
 
-    // Mostrar formulario de checkout
-    document.getElementById('checkout').classList.remove('hidden');
-    document.getElementById('finalizar-compra').classList.add('hidden');
-}
+    // Función para manejar el formulario de checkout
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-// Función para manejar el formulario de checkout
-document.getElementById('checkout-form').addEventListener('submit', function(e) {
-    e.preventDefault();
+        const nombreComprador = document.getElementById('nombre-comprador').value;
+        const direccion = document.getElementById('direccion').value;
+        const metodoPago = document.getElementById('metodo-pago').value;
 
-    const nombreComprador = document.getElementById('nombre-comprador').value;
-    const direccion = document.getElementById('direccion').value;
-    const metodoPago = document.getElementById('metodo-pago').value;
+        if (nombreComprador && direccion && metodoPago) {
+            // Calcular total con reduce
+            let total = carrito.reduce((sum, producto) => sum + producto.precio, 0);
 
-    if (nombreComprador && direccion && metodoPago) {
-        // Calcular total
-        let total = carrito.reduce((sum, producto) => sum + producto.precio, 0);
+            // Mostrar detalles de compra en alerta
+            alert(`¡Compra realizada con éxito!\nTotal a pagar: $${total}\nMétodo de Pago: ${metodoPago}\nDirección de Envío: ${direccion}\nComprador: ${nombreComprador}`);
 
-        // Mostrar detalles de compra
-        alert(`¡Compra realizada con éxito!\nTotal a pagar: $${total}\nMétodo de Pago: ${metodoPago}\nDirección de Envío: ${direccion}`);
+            // Vaciar el carrito y actualizar LocalStorage
+            carrito.forEach(producto => {
+                producto.stock -= 1; // Reducir stock de los productos comprados
+            });
+            carrito = [];
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            mostrarCarrito(); // Actualizar la vista del carrito
 
-        // Vaciar el carrito y actualizar LocalStorage
-        carrito = [];
-        localStorage.removeItem('carrito');
-        mostrarCarrito(); // Actualizar la vista del carrito
+            // Ocultar formulario de checkout y mostrar confirmación
+            document.getElementById('checkout').classList.add('hidden');
+            document.getElementById('confirmacion-compra').classList.remove('hidden');
+        } else {
+            alert("Por favor, completa todos los campos.");
+        }
+    });
 
-        // Ocultar formulario de checkout y mostrar confirmación
-        document.getElementById('checkout').classList.add('hidden');
-        document.getElementById('confirmacion-compra').classList.remove('hidden');
-    } else {
-        alert("Por favor, completa todos los campos.");
-    }
-});
+    // Evento para el botón "Finalizar Compra"
+    document.getElementById('finalizar-compra').addEventListener('click', finalizarCompra);
 
-// Evento para el botón "Finalizar Compra"
-document.getElementById('finalizar-compra').addEventListener('click', finalizarCompra);
-
-// Evento para el botón "Volver a Comprar"
-document.getElementById('volver-a-comprar').addEventListener('click', function() {
-    // Ocultar confirmación y mostrar productos disponibles
-    document.getElementById('confirmacion-compra').classList.add('hidden');
-    mostrarSeccion("comprador"); // Regresar a la sección de comprador
-});
-
-// Inicializar el carrito desde LocalStorage o como un arreglo vacío si no existe
-let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-
-// Función para finalizar la compra
-function finalizarCompra() {
-    if (carrito.length === 0) {
-        alert("El carrito está vacío. Agrega productos antes de finalizar la compra.");
-        return;
-    }
-
-    // Mostrar formulario de checkout
-    document.getElementById('checkout').classList.remove('hidden');
-    document.getElementById('finalizar-compra').classList.add('hidden');
-}
-
-// Función para manejar el formulario de checkout
-document.getElementById('checkout-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const nombreComprador = document.getElementById('nombre-comprador').value;
-    const direccion = document.getElementById('direccion').value;
-    const metodoPago = document.getElementById('metodo-pago').value;
-
-    if (nombreComprador && direccion && metodoPago) {
-        // Calcular total con reduce
-        let total = carrito.reduce((sum, producto) => sum + producto.precio, 0);
-
-        // Mostrar detalles de compra
-        alert(`¡Compra realizada con éxito!\nTotal a pagar: $${total}\nMétodo de Pago: ${metodoPago}\nDirección de Envío: ${direccion}`);
-
-        // Vaciar el carrito y actualizar LocalStorage
-        carrito = [];
-        localStorage.setItem('carrito', JSON.stringify(carrito));
-        mostrarCarrito(); // Actualizar la vista del carrito
-
-        // Ocultar formulario de checkout y mostrar confirmación
-        document.getElementById('checkout').classList.add('hidden');
-        document.getElementById('confirmacion-compra').classList.remove('hidden');
-    } else {
-        alert("Por favor, completa todos los campos.");
-    }
-});
-
-// Evento para el botón "Finalizar Compra"
-document.getElementById('finalizar-compra').addEventListener('click', finalizarCompra);
-
-// Evento para el botón "Volver a Comprar"
-document.getElementById('volver-a-comprar').addEventListener('click', function() {
-    // Ocultar confirmación y mostrar productos disponibles
-    document.getElementById('confirmacion-compra').classList.add('hidden');
-    mostrarSeccion("comprador"); // Regresar a la sección de comprador
+    // Evento para el botón "Volver a Comprar"
+    document.getElementById('volver-a-comprar').addEventListener('click', function() {
+        // Ocultar confirmación y mostrar productos disponibles
+        document.getElementById('confirmacion-compra').classList.add('hidden');
+        mostrarSeccion("comprador"); // Regresar a la sección de comprador
+    });
 });
