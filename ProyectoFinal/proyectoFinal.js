@@ -152,6 +152,47 @@ document.addEventListener('DOMContentLoaded', () => {
         usuarioActivo = null; // Resetear el usuario activo al cambiar de rol
         mostrarSeccion(null); // Forzar a que se pida login
     });
+    // Registro de usuarios
+    document.getElementById('btn-registro').addEventListener('click', () => {
+        document.getElementById('login').classList.add('hidden');
+        document.getElementById('registro').classList.remove('hidden');
+    });
+
+    document.getElementById('volver-login').addEventListener('click', () => {
+        document.getElementById('registro').classList.add('hidden');
+        document.getElementById('login').classList.remove('hidden');
+    });
+
+    document.getElementById('registro-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const nuevoUsername = document.getElementById('nuevo-username').value.trim();
+        const nuevoPassword = document.getElementById('nuevo-password').value.trim();
+        const nuevoRol = document.getElementById('nuevo-rol').value;
+
+        if (!nuevoUsername || !nuevoPassword || !nuevoRol) {
+            alert("Por favor, complete todos los campos.");
+            return;
+        }
+
+        const usuarioExistente = db.usuarios.some(user => user.nombre === nuevoUsername);
+        if (usuarioExistente) {
+            alert("El nombre de usuario ya está en uso. Por favor, elija otro.");
+            return;
+        }
+
+        db.usuarios.push({
+            id: db.usuarios.length + 1,
+            nombre: nuevoUsername,
+            password: nuevoPassword,
+            rol: nuevoRol
+        });
+
+        alert("Usuario registrado exitosamente. Ahora puede iniciar sesión.");
+        document.getElementById('registro-form').reset();
+        document.getElementById('registro').classList.add('hidden');
+        document.getElementById('login').classList.remove('hidden');
+    });
 
     // Evento para finalizar la compra
     function finalizarCompra() {

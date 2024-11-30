@@ -16,6 +16,7 @@
         </nav>
     </header>
     <main>
+        <!-- Sección de Inicio de Sesión -->
         <section id="login">
             <h2>Iniciar Sesión</h2>
             <form id="login-form">
@@ -25,57 +26,77 @@
                 <input type="password" id="password" required>
                 <button type="submit">Entrar</button>
             </form>
+            <p>¿No tienes cuenta? <button id="btn-registro" class="btn-link">Regístrate aquí</button></p>
         </section>
 
+        <!-- Sección de Registro -->
+        <section id="registro" class="hidden">
+            <h2>Registro de Usuario</h2>
+            <form id="registro-form">
+                <label for="nuevo-username">Nombre de usuario:</label>
+                <input type="text" id="nuevo-username" required>
+                <label for="nuevo-password">Contraseña:</label>
+                <input type="password" id="nuevo-password" required>
+                <label for="nuevo-rol">Rol:</label>
+                <select id="nuevo-rol" required>
+                    <option value="comprador">Comprador</option>
+                    <option value="vendedor">Vendedor</option>
+                </select>
+                <button type="submit">Registrarse</button>
+            </form>
+            <p>¿Ya tienes cuenta? <button id="volver-login" class="btn-link">Inicia sesión aquí</button></p>
+        </section>
+
+        <!-- Sección Comprador -->
         <section id="comprador" class="hidden">
             <div id="carouselExample" class="carousel slide">
                 <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img src="Images/Bolsas.png" class="d-block w-100" alt="...">
-                  </div>
-                  <div class="carousel-item">
-                    <img src="Images/shopping-4000414_640.jpg" class="d-block w-100" alt="...">
-                  </div>
-                  <div class="carousel-item">
-                    <img src="Images/store-4156934_640.png" class="d-block w-100" alt="...">
-                  </div>
+                    <div class="carousel-item active">
+                        <img src="Images/Bolsas.png" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Images/shopping-4000414_640.jpg" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Images/store-4156934_640.png" class="d-block w-100" alt="...">
+                    </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
                 </button>
-              </div>
+            </div>
             <h2>Productos Disponibles</h2>
             <div id="productos-lista"></div>
             <h3>Carrito de Compras</h3>
             <div id="carrito"></div>
             <button id="finalizar-compra">Finalizar Compra</button>
-        
-            <!-- Formulario de Checkout (Oculto hasta finalizar compra) -->
+
+            <!-- Formulario de Checkout -->
             <section id="checkout" class="hidden">
                 <h3>Detalles de la Compra</h3>
                 <form id="checkout-form">
                     <label for="nombre-comprador">Nombre:</label>
                     <input type="text" id="nombre-comprador" required>
-        
+
                     <label for="direccion">Dirección:</label>
                     <input type="text" id="direccion" required>
-        
+
                     <label for="metodo-pago">Método de Pago:</label>
                     <select id="metodo-pago" required>
                         <option value="tarjeta">Tarjeta de Crédito/Débito</option>
                         <option value="paypal">PayPal</option>
                     </select>
-        
+
                     <button type="submit">Confirmar Compra</button>
                 </form>
             </section>
-        
-            <!-- Sección de Confirmación de Compra -->
+
+            <!-- Confirmación de Compra -->
             <section id="confirmacion-compra" class="hidden">
                 <h3>¡Compra Realizada con Éxito!</h3>
                 <p>Tu compra ha sido procesada correctamente. ¡Gracias por tu compra!</p>
@@ -83,9 +104,8 @@
                 <button id="volver-a-comprar">Volver a Comprar</button>
             </section>
         </section>
-        
 
-
+        <!-- Sección Vendedor -->
         <section id="vendedor" class="hidden">
             <h2>Gestión de Productos</h2>
             <form id="producto-form">
