@@ -42,17 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+   // Función para agregar al carrito
     function agregarAlCarrito(producto) {
-        if (producto.stock > 0) {
-            carrito.push(producto);
-            producto.stock -= 1; // Reducir el stock
-            localStorage.setItem('carrito', JSON.stringify(carrito));
-            cargarProductos(); // Actualizar los productos disponibles
-            mostrarCarrito();
-        } else {
-            alert("No hay suficiente stock para agregar este producto al carrito.");
-        }
+    if (producto.stock > 0) {
+        carrito.push(producto);
+        producto.stock -= 1; // Reducir el stock en la base de datos
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        cargarProductos(); // Actualizar los productos disponibles
+        mostrarCarrito();
+    } else {
+        alert("No hay suficiente stock para agregar este producto al carrito.");
     }
+}
 
     function mostrarCarrito() {
         const carritoDiv = document.getElementById('carrito');
@@ -73,8 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
             carritoDiv.appendChild(item);
         });
     }
+    
 
-    function cargarProductos() {
+        function cargarProductos() {
         const lista = document.getElementById('productos-lista');
         lista.innerHTML = '';
         db.productos.forEach(producto => {
@@ -129,56 +131,57 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-comprador').addEventListener('click', () => mostrarSeccion("comprador"));
     document.getElementById('btn-vendedor').addEventListener('click', () => mostrarSeccion("vendedor"));
 
-    // Función para finalizar la compra
+  // Función para finalizar la compra
     function finalizarCompra() {
-        if (carrito.length === 0) {
-            alert("El carrito está vacío. Agrega productos antes de finalizar la compra.");
-            return;
-        }
-
-        // Mostrar formulario de checkout
-        document.getElementById('checkout').classList.remove('hidden');
-        document.getElementById('finalizar-compra').classList.add('hidden');
+    if (carrito.length === 0) {
+        alert("El carrito está vacío. Agrega productos antes de finalizar la compra.");
+        return;
     }
 
+   // Mostrar formulario de checkout
+   document.getElementById('checkout').classList.remove('hidden');
+   document.getElementById('finalizar-compra').classList.add('hidden');
+}
+
+
     // Función para manejar el formulario de checkout
-    document.getElementById('checkout-form').addEventListener('submit', function(e) {
-        e.preventDefault();
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-        const nombreComprador = document.getElementById('nombre-comprador').value;
-        const direccion = document.getElementById('direccion').value;
-        const metodoPago = document.getElementById('metodo-pago').value;
+    const nombreComprador = document.getElementById('nombre-comprador').value;
+    const direccion = document.getElementById('direccion').value;
+    const metodoPago = document.getElementById('metodo-pago').value;
 
-        if (nombreComprador && direccion && metodoPago) {
-            // Calcular total con reduce
-            let total = carrito.reduce((sum, producto) => sum + producto.precio, 0);
+    if (nombreComprador && direccion && metodoPago) {
+        // Calcular total con reduce
+        let total = carrito.reduce((sum, producto) => sum + producto.precio, 0);
 
-            // Mostrar detalles de compra en alerta
-            alert(`¡Compra realizada con éxito!\nTotal a pagar: $${total}\nMétodo de Pago: ${metodoPago}\nDirección de Envío: ${direccion}\nComprador: ${nombreComprador}`);
+        // Mostrar detalles de compra en alerta
+        alert(`¡Compra realizada con éxito!\nTotal a pagar: $${total}\nMétodo de Pago: ${metodoPago}\nDirección de Envío: ${direccion}\nComprador: ${nombreComprador}`);
 
-            // Vaciar el carrito y actualizar LocalStorage
-            carrito.forEach(producto => {
-                producto.stock -= 1; // Reducir stock de los productos comprados
-            });
-            carrito = [];
-            localStorage.setItem('carrito', JSON.stringify(carrito));
-            mostrarCarrito(); // Actualizar la vista del carrito
+        // Vaciar el carrito (sin restaurar el stock)
+        carrito = [];
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        mostrarCarrito(); // Actualizar la vista del carrito
 
-            // Ocultar formulario de checkout y mostrar confirmación
-            document.getElementById('checkout').classList.add('hidden');
-            document.getElementById('confirmacion-compra').classList.remove('hidden');
-        } else {
-            alert("Por favor, completa todos los campos.");
-        }
-    });
-
+        // Ocultar formulario de checkout y mostrar confirmación
+        document.getElementById('checkout').classList.add('hidden');
+        document.getElementById('confirmacion-compra').classList.remove('hidden');
+    } else {
+        alert("Por favor, completa todos los campos.");
+    }
+});
     // Evento para el botón "Finalizar Compra"
     document.getElementById('finalizar-compra').addEventListener('click', finalizarCompra);
 
-    // Evento para el botón "Volver a Comprar"
+   // Evento para el botón "Volver a Comprar"
     document.getElementById('volver-a-comprar').addEventListener('click', function() {
-        // Ocultar confirmación y mostrar productos disponibles
-        document.getElementById('confirmacion-compra').classList.add('hidden');
-        mostrarSeccion("comprador"); // Regresar a la sección de comprador
+    // Ocultar confirmación y mostrar productos disponibles
+    document.getElementById('confirmacion-compra').classList.add('hidden');
+    mostrarSeccion("comprador"); // Regresar a la sección de comprador
+    carrito = []; // Vaciar el carrito
+    localStorage.setItem('carrito', JSON.stringify(carrito)); // Actualizar el carrito en LocalStorage
+    mostrarCarrito(); // Actualizar la vista del carrito
     });
+    
 });
