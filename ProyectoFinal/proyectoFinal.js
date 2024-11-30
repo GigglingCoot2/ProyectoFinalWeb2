@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 2, nombre: "vendedor1", password: "1234", rol: "vendedor" }
         ],
         productos: [
-            { nombre: "Calcetines", precio: 100, descripcion: "Descripción producto 1", stock: 10 },
-            { nombre: "Gorras", precio: 150, descripcion: "Descripción producto 2", stock: 5 },
-            { nombre: "Sudadera", precio: 200, descripcion: "Descripción producto 3", stock: 2 }
+            { nombre: "Calcetines", precio: 100, descripcion: "Afelpados", stock: 10 },
+            { nombre: "Gorras", precio: 150, descripcion: "Nuevas", stock: 5 },
+            { nombre: "Sudadera", precio: 200, descripcion: "Guchi", stock: 2 }
         ]
     };
 
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lista.innerHTML = '';
         db.productos.forEach(producto => {
             const item = document.createElement('div');
-            item.textContent = `${producto.nombre} - $${producto.precio} - Stock: ${producto.stock}`;
+            item.textContent = `${producto.nombre} - $${producto.precio} - ${producto.descripcion} - Stock: ${producto.stock}`;
             const btnAgregar = document.createElement('button');
             btnAgregar.textContent = producto.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock';
             btnAgregar.disabled = producto.stock <= 0; // Deshabilitar si no hay stock disponible
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lista.innerHTML = '';
         db.productos.forEach((producto, index) => {
             const item = document.createElement('div');
-            item.textContent = `${producto.nombre} - $${producto.precio} - Stock: ${producto.stock}`;
+            item.textContent = `${producto.nombre} - $${producto.precio} - ${producto.descripcion} - Stock: ${producto.stock}`;
             const btnEliminar = document.createElement('button');
             btnEliminar.textContent = 'Eliminar';
             btnEliminar.addEventListener('click', () => {
