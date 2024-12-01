@@ -30,8 +30,8 @@ Este proyecto consiste en una plataforma de compra-venta en línea que conecta a
 Este sistema simula una tienda en línea básica, con las funcionalidades esenciales de un e-commerce, permitiendo  aprender sobre la interacción entre roles, la gestión de productos, y el proceso de compra en plataformas digitales.
 
 ## Integrantes del equipo
-Rodríguez Andrade Ximena 
-Martínez Vertiz Yael Siloe
-Segura Lagunas Sergio
-Fuentes Rosales Joshua Alexis
-Cuevas Cuevas Brian Yahir
+- Rodríguez Andrade Ximena (GigglingCoot2)
+- Martínez Vertiz Yael Siloe (yael0253)
+- Segura Lagunas Sergio (Sergiosela)
+- Fuentes Rosales Joshua Alexis (ElJomchua)
+- Cuevas Cuevas Brian Yahir (BrianY002)
