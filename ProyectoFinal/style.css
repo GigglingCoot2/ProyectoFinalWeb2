@@ -9,7 +9,7 @@ body {
 
 /* Encabezado */
 header {
-    background-color: #007bff;
+    background-color: #3c1ca7;
     color: white;
     padding: 1rem;
     text-align: center;
@@ -20,7 +20,7 @@ header h1 {
 }
 
 nav button {
-    background-color: #0056b3;
+    background-color: #4043ff;
     border: none;
     color: white;
     margin: 5px;
@@ -31,7 +31,7 @@ nav button {
 }
 
 nav button:hover {
-    background-color: #003d80;
+    background-color: #ffffff;
 }
 
 /* Secciones */
@@ -228,4 +228,113 @@ form button:hover {
 
 #confirmacion-compra button:hover {
     background-color: #0056b3;
+}
+.pie-pagina{
+    margin-top: 2rem;
+    width: 100%;
+    background-color: hsl(0, 0%, 0%);
+    position: relative;
+
+    animation:reveal linear both;
+    animation-timeline: view() ;
+    animation-range: entry 5% cover 20%; 
+}
+
+@keyframes reveal {
+    from{
+        opacity: 0.2;
+    }
+    to{
+        opacity: 1;
+    }
+
+
+}
+
+.pie-pagina .grupo-1{
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap:50px;
+    padding: 45px 0px;
+}
+.pie-pagina .grupo-1 .box figure{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pie-pagina .grupo-1 .box figure img{
+    width: 250px;
+}
+.pie-pagina .grupo-1 .box h2{
+    color: #fff;
+    margin-bottom: 25px;
+    font-size: 20px;
+}
+.pie-pagina .grupo-1 .box p{
+    color: #efefef;
+    margin-bottom: 10px;
+}
+.pie-pagina .grupo-1 .red-social a{
+    display: inline-block;
+    text-decoration: none;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    color: #fff;
+    margin-right: 10px;
+    background-color: #000000;
+    text-align: center;
+    transition: all 300ms ease;
+}
+.pie-pagina .grupo-1 .red-social a:hover{
+    color: rgb(192, 189, 189);
+}
+.pie-pagina .grupo-2{
+    background-color: #3c1ca7;
+    padding: 15px 10px;
+    text-align: center;
+    color: #fff;
+}
+.pie-pagina .grupo-2 small{
+    font-size: 15px;
+}
+@media screen and (max-width:800px){
+    .pie-pagina .grupo-1{
+        width: 90%;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap:30px;
+        padding: 35px 0px;
+    }
+}
+#infopie{
+    font-size:smaller;
+}
+#loguito{
+    position: relative;
+    bottom: 10px;
+    scale: .1;
+}
+#loguito1{
+    position: relative;
+    bottom: 100px;
+    scale: .1;
+}
+#loguito2{
+    position: relative;
+    bottom: 190px;
+    scale: .1;
+}
+#loguito3{
+    position: relative;
+    bottom: 280px;
+    scale: .1;
+}
+#logoya{
+    position: relative;
+    bottom: 170px;
 }
